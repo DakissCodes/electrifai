@@ -24,7 +24,6 @@ import {
 } from "react-native-chart-kit";
 
 
-import { data } from "./data.js"
 
 const Stack = createStackNavigator();
 
@@ -44,14 +43,18 @@ export default function HomeScreen({ navigation }) {
         'RobotoBold': require('./assets/fonts/Roboto-Bold.ttf'),
         'RobotoRegular': require('./assets/fonts/Roboto-Regular.ttf')
     });
-    const data = {
-        labels: ["January", "February", "March", "April", "May", "June"],
-        datasets: [
-            {
-                data: [20, 45, 28, 80, 99, 43]
-            }
-        ]
-    };
+    let dataFromIot = [
+        {
+            data: [
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100
+            ]
+        }
+    ]
   
     return (
         <ScrollView style={styles.body}>
@@ -66,35 +69,22 @@ export default function HomeScreen({ navigation }) {
                 </View>
             </View>
             <View style={styles.main}>
-                <Text style={styles.topMainText}> Monthly Consumption</Text>
-                <View style={[styles.mainCard,styles.shadowProp]}>
-                    <View>
-                        <Text>Bezier Line Chart</Text>
+                <Text style={styles.topMainText}> Daily Consumption</Text>
+                {/* <View style={[styles.mainCard,styles.shadowProp]}> */}
+                    <View style={styles.chartContainer}>
                         <BarChart
                             data={{
-                                labels: ["January", "February", "March", "April", "May", "June"],
-                                datasets: [
-                                    {
-                                        data: [
-                                            Math.random() * 100,
-                                            Math.random() * 100,
-                                            Math.random() * 100,
-                                            Math.random() * 100,
-                                            Math.random() * 100,
-                                            Math.random() * 100
-                                        ]
-                                    }
-                                ]
+                                labels: ["Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"],
+                                datasets: dataFromIot
                             }}
-                            width={350} // from react-native
+                            width={width-75} // from react-native
                             height={220}
-                            yAxisLabel="$"
-                            yAxisSuffix="k"
+                            yAxisLabel=""
+                            yAxisSuffix="kWh"
                             yAxisInterval={1} // optional, defaults to 1
                             chartConfig={{
-                                backgroundColor: "#e26a00",
-                                backgroundGradientFrom: "#fb8c00",
-                                backgroundGradientTo: "#ffa726",
+                                backgroundGradientFrom: "orange",
+                                backgroundGradientTo: "orange",
                                 decimalPlaces: 2, // optional, defaults to 2dp
                                 color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                                 labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -102,19 +92,39 @@ export default function HomeScreen({ navigation }) {
                                     borderRadius: 16
                                 },
                                 propsForDots: {
-                                    r: "6",
+                                    r: "6k",
                                     strokeWidth: "2",
                                     stroke: "#ffa726"
                                 }
                             }}
                             bezier
-                            style={{
-                                marginVertical: 8,
-                                borderRadius: 16
-                            }}
+                            style={[styles.chart]}
                         />
                     </View>
-                </View>
+                    <View style={[styles.graphCard, styles.shadowProp]}>
+                        
+                        <View style={styles.textCont}>
+                            <Text>Monday</Text>
+                            <Text>Mon</Text>
+                        </View>
+                        <View style={styles.textCont}>
+                            <Text>Tue</Text>
+                            <Text>January</Text>
+                        </View>
+                        <View style={styles.textCont}>
+                            <Text>Wed</Text>
+                            <Text>January</Text>
+                        </View>
+                        <View style={styles.textCont}>
+                            <Text>Thu</Text>
+                            <Text>January</Text>
+                        </View>
+                        <View style={styles.textCont}>
+                            <Text>Sat</Text>
+                            <Text>January</Text>
+                        </View>
+                    </View>
+                {/* </View> */}
                 
             </View>
         
@@ -183,10 +193,34 @@ const styles = StyleSheet.create({
         padding: 20,   
         
     },
-    mainCard: {
-        backgroundColor: "white",
-        height: 700,
+    // mainCard: {
+    //     backgroundColor: "white",
+    //     padding: 20,
+        
+    //     borderRadius: 12,
+    // },
+    chart: {
         borderRadius: 12,
     },
     
+    chartContainer: {
+        
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    
+    graphCard: {
+        padding: 20,
+        backgroundColor: "white",
+        borderRadius: 12,
+        flex: 1,
+        rowGap: 5,
+    },
+    textCont: {
+        fontSize:16,
+        flex: 1,
+        justifyContent: "space-between",
+        flexDirection: "row",
+    }
 })
