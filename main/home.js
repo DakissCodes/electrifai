@@ -52,7 +52,8 @@ export default function HomeScreen({ navigation }) {
                 Math.random() * 100,
                 Math.random() * 100,
                 Math.random() * 100
-            ]
+            ],
+            labels: ["Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"]
         }
     ]
   
@@ -83,8 +84,8 @@ export default function HomeScreen({ navigation }) {
                             yAxisSuffix="kWh"
                             yAxisInterval={1} // optional, defaults to 1
                             chartConfig={{
-                                backgroundGradientFrom: "orange",
-                                backgroundGradientTo: "orange",
+                                backgroundGradientFrom: "#d16a1d",
+                                backgroundGradientTo: "#d16a1d",
                                 decimalPlaces: 2, // optional, defaults to 2dp
                                 color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                                 labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -102,29 +103,43 @@ export default function HomeScreen({ navigation }) {
                         />
                     </View>
                     <View style={[styles.graphCard, styles.shadowProp]}>
-                        
-                        <View style={styles.textCont}>
-                            <Text>Monday</Text>
-                            <Text>Mon</Text>
-                        </View>
-                        <View style={styles.textCont}>
-                            <Text>Tue</Text>
-                            <Text>January</Text>
-                        </View>
-                        <View style={styles.textCont}>
-                            <Text>Wed</Text>
-                            <Text>January</Text>
-                        </View>
-                        <View style={styles.textCont}>
-                            <Text>Thu</Text>
-                            <Text>January</Text>
-                        </View>
-                        <View style={styles.textCont}>
-                            <Text>Sat</Text>
-                            <Text>January</Text>
-                        </View>
+                        {dataFromIot[0].data.map((item,index)=> (
+                            <View style={styles.textCont}>
+                                <Text style={{fontSize: 16, fontWeight: "bold"}}>{dataFromIot[0].labels[index]}</Text>
+                                <Text style={{fontSize: 16}}key={index}>{item.toFixed(2)} kWh</Text>
+                            </View>
+                        ))}
+
                     </View>
-                {/* </View> */}
+                    <View style={[styles.billCard, styles.shadowProp]}>
+                            <View style={styles.textCont}>
+                        <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                                    Projected Bill
+                                </Text>
+                        <Text style={{ fontSize: 16 }}>
+                                    P 15,000
+                                </Text>
+                                
+                            </View>
+                            <View style={styles.textCont}>
+                        <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                                    Total Consumption
+                                </Text>
+                        <Text style={{ fontSize: 16 }}>
+                                    699 kWh
+                                </Text>
+                                
+                            </View>
+                            <View style={styles.textCont}>
+                        <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                                    Daily Ave. Consumption
+                                </Text>
+                        <Text style={{ fontSize: 16 }}>
+                                    78 kWh
+                                </Text>
+                                
+                            </View>
+                    </View>
                 
             </View>
         
@@ -137,7 +152,7 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
     body: {
         flex: 1,
-        backgroundColor: "orange",
+        backgroundColor: "#d16a1d",
     },
     topHeaderText: {
         fontSize: 20,
@@ -148,7 +163,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     header:{
-        backgroundColor: "orange",
+        backgroundColor: "#d16a1d",
         paddingTop: 20,
         paddingLeft: 20,
         paddingRight: 20,
@@ -222,5 +237,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "space-between",
         flexDirection: "row",
+    },
+    billCard: {
+        marginTop: 20,
+        padding: 20,
+        backgroundColor: "white",
+        borderRadius: 12,
+        flex: 1,
+        rowGap: 5,
     }
 })

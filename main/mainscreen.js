@@ -49,15 +49,15 @@ export default function Main() {
                             // icon name from ionicons
                             iconName = 'bar-chart-outline';
                             size = focused ? 25 : 20;
-                            color = focused ? 'orange' : 'orange'
+                            color = focused ? '#d16a1d' : '#d16a1d'
                         } else if (route.name === 'Tracking') {
                             iconName = 'hardware-chip-outline';
                             size = focused ? 25 : 20;
-                            color = focused ? 'orange' : 'orange'
+                            color = focused ? '#d16a1d' : '#d16a1d'
                         } else if (route.name === 'Profile') {
                             iconName = 'person-outline';
                             size = focused ? 25 : 20;
-                            color = focused ? 'orange' : 'orange'
+                            color = focused ? '#d16a1d' : '#d16a1d'
                         }
                         return (
                             <Ionicons name={iconName} size={size} color={color}></Ionicons>
@@ -70,8 +70,8 @@ export default function Main() {
                     inactiveTintColor: 'white',
                     labelStyle: { fontSize: 16 }
                 }}
-                activeColor="orange"
-                inactiveColor="orange"
+                activeColor="#d16a1d"
+                inactiveColor="#d16a1d"
                 barStyle={{ 
                     backgroundColor: 'white',
                     borderRadius: 10,}}
