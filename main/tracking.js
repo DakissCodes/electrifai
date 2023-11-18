@@ -15,11 +15,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Stack = createStackNavigator();
 
-export default function TrackingScreen({ navigation }) {
-    const onPressHandler = () => {
-        navigation.replace('Screen_A')
+export default function TrackingScreen() {
 
-    }
     const anomaly = true
     const warningText = anomaly ? "There is an unusual increase in your \nelectrical consumption over the \npast few weeks." : "There is no unusual increase in your \nelectrical consumption over the \npast few weeks."
     const alertLogo = anomaly ? "warning-outline" : "checkmark-circle-outline"
@@ -46,13 +43,14 @@ const styles = StyleSheet.create({
     body: {
         flex: 1,
         rowGap: 20,
-        backgroundColor: "#d16a1d",
+        backgroundColor: "white",
         padding: 20,
     },
     text: {
         fontSize: 40,
         fontWeight: 'bold',
-        margin: 10
+        margin: 10,
+        color: "rgb(105,105,105)"
     },
     alertCard: {
         backgroundColor: "white",

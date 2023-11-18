@@ -8,7 +8,7 @@ import {
     View
 } from 'react-native';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -21,7 +21,6 @@ import ProfileScreen from './profile.js';
 // importing ionicons, available from expo already!
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
-
 
 
 

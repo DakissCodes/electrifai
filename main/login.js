@@ -44,7 +44,7 @@ export default function Login() {
            <TouchableOpacity>
                <Text style={styles.forgot_button}>Forgot Password?</Text>
            </TouchableOpacity>
-           <TouchableOpacity onPress={onPressHandler} style={styles.loginBtn}>
+           <TouchableOpacity onPress={onPressHandler} style={[styles.loginBtn, styles.shadowProp]}>
                <Text style={[styles.loginText, styles.shadowProp]}>LOGIN</Text>
            </TouchableOpacity>
 
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         
-        backgroundColor: "orange",
+        backgroundColor: "#d16a1d",
     },
 
     shadowProp: {

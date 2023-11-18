@@ -22,15 +22,54 @@ import {
     ContributionGraph,
     StackedBarChart
 } from "react-native-chart-kit";
+import Ionicons from '@expo/vector-icons/Ionicons';
 
+// firebase
+import { firebase } from './config.js';
 
 
 const Stack = createStackNavigator();
 
 export default function HomeScreen({ navigation }) {
+    const Fetch = () => {
+        const [measurement, updateMeasure] = useState([])
+        // users var name, setUsers manipulate state
+        const powerUsage = firebase.firestore().collections('power-usage')
+        // grab collections from firebase "power-usage"
+
+        useEffect(async () => {
+            // runs every update
+            powerUsage
+                .onSnapshot(
+                    // when new data arrives
+                    querySnapshot => {
+                        // grab data
+                        const measurement = []
+                        // array
+                        querySnapshot.forEach((doc) => {
+                            // for each object in collection
+                            const { power, timestamp } = doc.data()
+                            // set values from doc into power , timestamp
+                            measurement.push({
+                                // push to array doc id, power and timestamp
+                                id: doc.id,
+                                power,
+                                timestamp
+                            })
+                        })
+                        // update the state
+                        updateMeasure(measurement)
+                    }
+                )
+        })
+   }
+
+
 
     // const onPressHandler = () => {
     //     // navigate to screen B
+        //     
+    const readings = Fetch;
     const width = Dimensions.get('window').width
     const height = 220
     //     navigation.replace('Screen_B');
@@ -51,9 +90,10 @@ export default function HomeScreen({ navigation }) {
                 Math.random() * 100,
                 Math.random() * 100,
                 Math.random() * 100,
+                Math.random() * 100,
                 Math.random() * 100
             ],
-            labels: ["Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"]
+            labels: ["Mon", "Tue", "Wed", "Thurs", "Fri", "Sat","Sun"]
         }
     ]
   
@@ -63,9 +103,15 @@ export default function HomeScreen({ navigation }) {
                 <Text style={styles.topHeaderText}> Hey there, Justine!
                 </Text>
                 <View style={[styles.headerCard, styles.shadowProp]}>
-                    <Text style={styles.cardTopText}>Avg. Daily Consumption ></Text>
-                    <Text style={styles.cardMiddleText}>5.676 kWh</Text>
-                    <Text style={styles.cardBotText}>As of 12:00 PM</Text>
+                    <Ionicons name={"flash-outline"} size={50} color={"green"} style={{marginTop: 12}}></Ionicons>
+                    
+                    <View style={styles.headerTextCont}>
+                        <Text style={styles.cardTopText}>Avg. Daily Consumption</Text>
+                        <Text style={styles.cardMiddleText}>5.676 kWh</Text>
+                        <Text style={styles.cardBotText}>As of 12:00 PM</Text>
+                    </View>
+        
+
 
                 </View>
             </View>
@@ -75,27 +121,28 @@ export default function HomeScreen({ navigation }) {
                     <View style={styles.chartContainer}>
                         <BarChart
                             data={{
-                                labels: ["Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"],
+                                labels: dataFromIot[0].labels,
                                 datasets: dataFromIot
                             }}
-                            width={width-75} // from react-native
+                            width={width-50} // from react-native
                             height={220}
                             yAxisLabel=""
-                            yAxisSuffix="kWh"
+                            yAxisSuffix=" kWh"
                             yAxisInterval={1} // optional, defaults to 1
                             chartConfig={{
-                                backgroundGradientFrom: "#d16a1d",
-                                backgroundGradientTo: "#d16a1d",
-                                decimalPlaces: 2, // optional, defaults to 2dp
-                                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                backgroundGradientFrom: "white",
+                                backgroundGradientTo: "white",
+                                decimalPlaces: 1, // optional, defaults to 2dp
+                                color: (opacity = 1) => `rgb(105,105,105) ${opacity})`,
+                                labelColor: (opacity = 1) => `rgb(105,105,105)  ${opacity})`,
                                 style: {
-                                    borderRadius: 16
+                                    borderRadius: 16,
+                                    fontWeight: "bold"
                                 },
                                 propsForDots: {
-                                    r: "6k",
-                                    strokeWidth: "2",
-                                    stroke: "#ffa726"
+                                    r: "6",
+                                    strokeWidth: "6",
+                                    stroke: "black"
                                 }
                             }}
                             bezier
@@ -103,38 +150,48 @@ export default function HomeScreen({ navigation }) {
                         />
                     </View>
                     <View style={[styles.graphCard, styles.shadowProp]}>
+                            <View style={{flexDirection: "row", columnGap: 12}}>
+                                <Ionicons name={"analytics-outline"} size={25} color={"rgb(105,105,105)"}></Ionicons>
+                                <Text style={{ fontWeight: "bold", fontSize: 18, marginBottom: 10, color:"rgb(105,105,105)"}}>Data</Text>
+        
+                            </View> 
                         {dataFromIot[0].data.map((item,index)=> (
                             <View style={styles.textCont}>
-                                <Text style={{fontSize: 16, fontWeight: "bold"}}>{dataFromIot[0].labels[index]}</Text>
-                                <Text style={{fontSize: 16}}key={index}>{item.toFixed(2)} kWh</Text>
+                                <Text style={{ fontSize: 16, fontWeight: "bold", color: "#d16a1d" }}>{dataFromIot[0].labels[index]}</Text>
+                                <Text style={{ fontSize: 16, color: "rgb(105,105,105)" }}key={index}>{item.toFixed(2)} kWh</Text>
                             </View>
                         ))}
 
                     </View>
                     <View style={[styles.billCard, styles.shadowProp]}>
+                            <View style={{flexDirection: "row", columnGap: 12}}>
+                            <Ionicons name={"calendar-outline"} size={25} color={"rgb(105,105,105)"}></Ionicons>
+                            <Text style={{ fontWeight: "bold", fontSize: 18, marginBottom: 10, color:"rgb(105,105,105)"}}>Monthly Projection</Text>
+        
+                            </View> 
                             <View style={styles.textCont}>
-                        <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                                <Text style={{ fontSize: 16, fontWeight: "bold", color: "#d16a1d" }}>
                                     Projected Bill
                                 </Text>
-                        <Text style={{ fontSize: 16 }}>
+                                 <Text style={{ fontSize: 16, color: "rgb(105,105,105)" }}>
                                     P 15,000
                                 </Text>
                                 
                             </View>
                             <View style={styles.textCont}>
-                        <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                        <Text style={{ fontSize: 16, fontWeight: "bold", color: "#d16a1d" }}>
                                     Total Consumption
                                 </Text>
-                        <Text style={{ fontSize: 16 }}>
+                        <Text style={{ fontSize: 16, color: "rgb(105,105,105)" }}>
                                     699 kWh
                                 </Text>
                                 
                             </View>
                             <View style={styles.textCont}>
-                        <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                        <Text style={{ fontSize: 16, fontWeight: "bold", color: "#d16a1d" }}>
                                     Daily Ave. Consumption
                                 </Text>
-                        <Text style={{ fontSize: 16 }}>
+                        <Text style={{ fontSize: 16, color: "rgb(105,105,105)" }}>
                                     78 kWh
                                 </Text>
                                 
@@ -151,8 +208,8 @@ export default function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     body: {
+        
         flex: 1,
-        backgroundColor: "#d16a1d",
     },
     topHeaderText: {
         fontSize: 20,
@@ -164,30 +221,33 @@ const styles = StyleSheet.create({
     },
     header:{
         backgroundColor: "#d16a1d",
-        paddingTop: 20,
-        paddingLeft: 20,
-        paddingRight: 20,
+        padding: 20,
+    },
+    headerTextCont: {
+        display: "flex",
+        flexDirection: "column",
+        rowGap: 3,
     },
     headerCard: {
         backgroundColor: "white",
         borderRadius:12,
-        
+        flexDirection: "row",
+        columnGap: 15,
         padding: 25,
-        display: "flex",
-        flexDirection: "column",
-        rowGap: 3,
 
     },
     cardTopText: {
         fontSize: 16,
         fontWeight: "500",
-
+        color: "rgb(105,105,105)"
     },
     cardBotText: {
         fontSize: 12,
+        color: "rgb(105,105,105)"
     }, 
     cardMiddleText: {
         fontSize: 30,
+        fontWeight: "600",
     },
     shadowProp: {
         shadowColor: '#000',
@@ -200,13 +260,13 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontFamily: 'RobotoRegular',
         fontWeight: "700",
-        color: "white",
+        color: "#d16a1d",
         marginBottom:10,
        
     },
     main: {
         padding: 20,   
-        
+        backgroundColor: "white",
     },
     // mainCard: {
     //     backgroundColor: "white",
