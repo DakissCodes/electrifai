@@ -128,7 +128,7 @@ export default function HomeScreen({ navigation }) {
                 </TouchableOpacity>
                 <View style={{flexDirection: "row", columnGap: 20}}>
                     <TouchableOpacity style={[{backgroundColor: "white", padding: 20, marginTop: 20, borderRadius: 12, flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}, styles.shadowProp]}>
-                        <Ionicons name={"swap-vertical-outline"} size={24} color={"red  "} ></Ionicons>
+                        <Ionicons name={"swap-vertical-outline"} size={24} color={"red"} ></Ionicons>
                         <Text style={{ fontSize: 20, fontWeight: "bold"}}>{volt = measurement.volt ? measurement.volt: '...'} V</Text>
         
             
@@ -232,7 +232,14 @@ export default function HomeScreen({ navigation }) {
                                 
                             </View>
                     </TouchableOpacity>
+                    <TouchableOpacity style={[styles.sensorCard, styles.shadowProp, {marginTop: 20}]}>
+                        <View style={{flexDirection: "row", columnGap:20, justifyContent: "space-around", alignItems: "center"}}>
+                            <Ionicons name={"hardware-chip-outline"} size={30} color={"green"} ></Ionicons>
+                            <Text style={{ flex: 1, color: "rgb(105,105,105)" }}>All sensors are functioning.</Text>
+                        </View>
                 
+                    </TouchableOpacity>
+                        
             </View>
         
 
@@ -345,5 +352,11 @@ const styles = StyleSheet.create({
         color: "rgb(105,105,105)",
         
 
-    }
+    },
+    sensorCard: {
+        backgroundColor: "white",
+        padding: 20,
+        borderRadius: 12,
+
+    },
 })
