@@ -17,8 +17,8 @@ const Stack = createStackNavigator();
 
 export default function TrackingScreen() {
 
-    const anomaly = true
-    const warningText = anomaly ? "There is an unusual increase in your \nelectrical consumption over the \npast few weeks." : "There is no unusual increase in your \nelectrical consumption over the \npast few weeks."
+    const anomaly = false
+    const warningText = anomaly ? "There is an unusual increase in your electrical consumption over the past few weeks." : "There is no unusual increase in your electrical consumption over the past few weeks."
     const alertLogo = anomaly ? "warning-outline" : "checkmark-circle-outline"
     const alertHeader = anomaly? "Warning" : "You're safe!"
     const alertColor = anomaly ? "red" : "green"
@@ -29,7 +29,7 @@ export default function TrackingScreen() {
                 <Text style={styles.alertText}>{alertHeader}</Text>
                 <View style={styles.textCont}>
                     <Ionicons name={alertLogo} size={60} color={alertColor}></Ionicons>
-                    <Text>{warningText}</Text>
+                    <Text style={{flex: 1}}>{warningText}</Text>
                 </View>
         
             </View>
@@ -41,6 +41,7 @@ export default function TrackingScreen() {
 
 const styles = StyleSheet.create({
     body: {
+        marginTop: 10,
         flex: 1,
         rowGap: 20,
         backgroundColor: "white",
@@ -57,10 +58,9 @@ const styles = StyleSheet.create({
         padding: 30,
         rowGap: 10,
         marginTop: 20,
-
-        height: 170,
         borderRadius: 12,
-        
+        height: 170,
+        display: "flex",
     },
     textCont: {
         fontSize: 16,

@@ -7,10 +7,13 @@ import {
     Pressable,
     View,
     ScrollView,
-    Dimensions
+    Dimensions,
+    
 } from 'react-native';
 
-import React, { useState } from 'react';
+
+
+import React, { useState , useEffect, forEach} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {useFonts} from 'expo-font';
@@ -23,96 +26,119 @@ import {
     StackedBarChart
 } from "react-native-chart-kit";
 import Ionicons from '@expo/vector-icons/Ionicons';
-
 // firebase
 import { firebase } from './config.js';
 
+import { getDatabase, ref, onValue } from "firebase/database";
+
+const database = getDatabase()
 
 const Stack = createStackNavigator();
+const date = new Date();
+let day = date.getDay();
 
 export default function HomeScreen({ navigation }) {
-    const Fetch = () => {
-        const [measurement, updateMeasure] = useState([])
-        // users var name, setUsers manipulate state
-        const powerUsage = firebase.firestore().collections('power-usage')
-        // grab collections from firebase "power-usage"
-
-        useEffect(async () => {
-            // runs every update
-            powerUsage
-                .onSnapshot(
-                    // when new data arrives
-                    querySnapshot => {
-                        // grab data
-                        const measurement = []
-                        // array
-                        querySnapshot.forEach((doc) => {
-                            // for each object in collection
-                            const { power, timestamp } = doc.data()
-                            // set values from doc into power , timestamp
-                            measurement.push({
-                                // push to array doc id, power and timestamp
-                                id: doc.id,
-                                power,
-                                timestamp
-                            })
-                        })
-                        // update the state
-                        updateMeasure(measurement)
-                    }
-                )
+    let dailyMeasure = []
+    let avgConsumptionDay
+    if (dailyMeasure.length == 48) {
+        avgConsumptionDay = dailyMeasure.reduce((a,b) => {
+            return a + b
         })
-   }
+        dataFromIot[0].data[day] = avgConsumptionDay;
+    }
+    
+    const [measurement, updateMeasure] = useState({})
+    
+    let volt
+    let current
+    let power
 
+    useEffect(() => {
+        // runs every update
+        const powerUsageRef = ref(database, 'power-usage/' + 'reading/');
+        let tempArray = [] 
+        onValue(powerUsageRef, (snapshot) => {
+            const directory = snapshot.val();
+            
+            let keys = Object.keys(directory)
+            // all keys
+            // console.log(keys)
+            let lastKey = keys[keys.length - 1]
+            // last key
+            console.log(lastKey)
 
+            let data = directory[lastKey];
+            // grab object data
+            
+            updateMeasure(data)
+            console.log(data)
+        })
+            
+    },[])
+    
+    const [time, setTime] = useState(new Date());
 
-    // const onPressHandler = () => {
-    //     // navigate to screen B
-        //     
-    const readings = Fetch;
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setTime(new Date());
+        }, 1000);
+
+        return () => clearInterval(intervalId); // This is the cleanup function to clear the interval when the component unmounts
+    }, []);
+
+    
+    
     const width = Dimensions.get('window').width
-    const height = 220
     //     navigation.replace('Screen_B');
     // }
     let [fontsLoaded] = useFonts({
         'InterRegular': require('./assets/fonts/Inter-Regular.ttf'),
         'InterLight': require('./assets/fonts/Inter-Light.ttf'),
         'InterBold': require('./assets/fonts/Inter-Bold.ttf'),
-        'RobotoLight': require('./assets/fonts/Roboto-Light.ttf'),
-        'RobotoBold': require('./assets/fonts/Roboto-Bold.ttf'),
-        'RobotoRegular': require('./assets/fonts/Roboto-Regular.ttf')
+
     });
     let dataFromIot = [
-        {
+        { 
             data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100
+                12,
+                10,
+                11,
+                14,
+                15,
+                12,
+                18,
+                
             ],
-            labels: ["Mon", "Tue", "Wed", "Thurs", "Fri", "Sat","Sun"]
+            labels: ["Mon", "Tue", "Wed", "Thurs", "Fri", "Sat", "Sun"]
         }
     ]
-  
+    // Fetch()
     return (
         <ScrollView style={styles.body}>
             <View style={styles.header}>
                 <Text style={styles.topHeaderText}> Hey there, Justine!
                 </Text>
-                <View style={[styles.headerCard, styles.shadowProp]}>
-                    <Ionicons name={"flash-outline"} size={50} color={"green"} style={{marginTop: 12}}></Ionicons>
-                    
-                    <View style={styles.headerTextCont}>
-                        <Text style={styles.cardTopText}>Avg. Daily Consumption</Text>
-                        <Text style={styles.cardMiddleText}>5.676 kWh</Text>
-                        <Text style={styles.cardBotText}>As of 12:00 PM</Text>
-                    </View>
+                <TouchableOpacity style={[styles.headerCard, styles.shadowProp]}>
+                    <Ionicons name={"flash-outline"} size={49} color={"green"} style={{marginTop: 14}}></Ionicons>
+                                <View style={styles.headerTextCont}>
+                                    <Text style={styles.cardTopText}>Real Time Consumption</Text>
+                                    <Text style={styles.cardMiddleText}>{power = measurement.power ? measurement.power: '...'} Watts</Text>
+                                    <Text style={styles.cardBotText}>As of {time.toLocaleString()}</Text>
+                                </View>
+                </TouchableOpacity>
+                <View style={{flexDirection: "row", columnGap: 20}}>
+                    <TouchableOpacity style={[{backgroundColor: "white", padding: 20, marginTop: 20, borderRadius: 12, flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}, styles.shadowProp]}>
+                        <Ionicons name={"swap-vertical-outline"} size={24} color={"red  "} ></Ionicons>
+                        <Text style={{ fontSize: 20, fontWeight: "bold"}}>{volt = measurement.volt ? measurement.volt: '...'} V</Text>
         
-
-
+            
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[{backgroundColor: "white", padding: 20, marginTop: 20, borderRadius: 12, flex: 1, flexDirection: "row", justifyContent: "space-between", alignItems: "center"}, styles.shadowProp]}>
+                        <Ionicons name={"pulse-outline"} size={24} color={"blue"}></Ionicons>
+                        <Text style={{fontSize: 20, fontWeight: "bold"}}>{current = measurement.current ? measurement.current: '...'} A</Text>
+            
+                    </TouchableOpacity>
+                    
                 </View>
             </View>
             <View style={styles.main}>
@@ -149,21 +175,21 @@ export default function HomeScreen({ navigation }) {
                             style={[styles.chart]}
                         />
                     </View>
-                    <View style={[styles.graphCard, styles.shadowProp]}>
+                    <TouchableOpacity style={[styles.graphCard, styles.shadowProp]}>
                             <View style={{flexDirection: "row", columnGap: 12}}>
                                 <Ionicons name={"analytics-outline"} size={25} color={"rgb(105,105,105)"}></Ionicons>
                                 <Text style={{ fontWeight: "bold", fontSize: 18, marginBottom: 10, color:"rgb(105,105,105)"}}>Data</Text>
         
                             </View> 
                         {dataFromIot[0].data.map((item,index)=> (
-                            <View style={styles.textCont}>
+                            <View style={styles.textCont} key={index}>
                                 <Text style={{ fontSize: 16, fontWeight: "bold", color: "#d16a1d" }}>{dataFromIot[0].labels[index]}</Text>
-                                <Text style={{ fontSize: 16, color: "rgb(105,105,105)" }}key={index}>{item.toFixed(2)} kWh</Text>
+                                <Text style={{ fontSize: 16, color: "rgb(105,105,105)" }}>{item.toFixed(2)} kWh</Text>
                             </View>
                         ))}
 
-                    </View>
-                    <View style={[styles.billCard, styles.shadowProp]}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.billCard, styles.shadowProp]}>
                             <View style={{flexDirection: "row", columnGap: 12}}>
                             <Ionicons name={"calendar-outline"} size={25} color={"rgb(105,105,105)"}></Ionicons>
                             <Text style={{ fontWeight: "bold", fontSize: 18, marginBottom: 10, color:"rgb(105,105,105)"}}>Monthly Projection</Text>
@@ -171,10 +197,19 @@ export default function HomeScreen({ navigation }) {
                             </View> 
                             <View style={styles.textCont}>
                                 <Text style={{ fontSize: 16, fontWeight: "bold", color: "#d16a1d" }}>
+                                    Current Rate (per kWh)
+                                </Text>
+                                 <Text style={{ fontSize: 16, color: "rgb(105,105,105)" }}>
+                                    ₱ 11.91
+                                </Text>
+                                
+                            </View>
+                            <View style={styles.textCont}>
+                                <Text style={{ fontSize: 16, fontWeight: "bold", color: "#d16a1d" }}>
                                     Projected Bill
                                 </Text>
                                  <Text style={{ fontSize: 16, color: "rgb(105,105,105)" }}>
-                                    P 15,000
+                                    ₱ 4,893
                                 </Text>
                                 
                             </View>
@@ -183,7 +218,7 @@ export default function HomeScreen({ navigation }) {
                                     Total Consumption
                                 </Text>
                         <Text style={{ fontSize: 16, color: "rgb(105,105,105)" }}>
-                                    699 kWh
+                                    123 kWh
                                 </Text>
                                 
                             </View>
@@ -192,11 +227,11 @@ export default function HomeScreen({ navigation }) {
                                     Daily Ave. Consumption
                                 </Text>
                         <Text style={{ fontSize: 16, color: "rgb(105,105,105)" }}>
-                                    78 kWh
+                                    11.2 kWh
                                 </Text>
                                 
                             </View>
-                    </View>
+                    </TouchableOpacity>
                 
             </View>
         
@@ -208,14 +243,13 @@ export default function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     body: {
-        
         flex: 1,
     },
+    
     topHeaderText: {
         fontSize: 20,
-        
+        marginTop: 25, 
         fontWeight: "700",
-        marginTop: 10,
         color: "white",
         marginBottom: 10,
     },
@@ -258,7 +292,7 @@ const styles = StyleSheet.create({
     },
     topMainText: {
         fontSize: 20,
-        fontFamily: 'RobotoRegular',
+        
         fontWeight: "700",
         color: "#d16a1d",
         marginBottom:10,
@@ -305,5 +339,11 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         flex: 1,
         rowGap: 5,
+    },
+    measurementText: {
+        fontSize: 16,
+        color: "rgb(105,105,105)",
+        
+
     }
 })

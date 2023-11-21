@@ -1,0 +1,12 @@
+{
+    "power-usage": {
+        "reading" : {
+            "timestamp": "1243",
+            "volt":"45",
+            "current":"45",
+            "power": "23"
+            
+        }
+
+    }
+}

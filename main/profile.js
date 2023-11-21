@@ -19,12 +19,12 @@ import Login from './login.js';
 const Stack = createStackNavigator();
 
 export default function ProfileScreen() {
-    const navigation = useNavigation();
-    const onPressHandler = () => {
-        navigation.navigate('Login')
+    // const navigation = useNavigation();
+    // const onPressHandler = () => {
+    //     navigation.navigate('Login')
 
         
-    }
+    // }
 
     return (
         <View style={styles.body}>
@@ -32,12 +32,12 @@ export default function ProfileScreen() {
                 <Image source={require("./assets/skies.jpg")}
                         style={styles.coverImg}
                 ></Image>
-                <Image source={require("./assets/id.jpeg")}
+                <Image source={require("./assets/id.jpg")}
                 style={styles.idImg} 
                 ></Image>
 
                 <View style={styles.userInfoCont}>
-                    <Text style={styles.name}>Giannis Antetokounmpo</Text>
+                    <Text style={styles.name}>Juan Dela Cruz</Text>
                     <View style={{justifyContent:"center", flexDirection:"row", columnGap: 5}}>
                         <Ionicons name={"pin-outline"} size={20} color={"white"}></Ionicons>
                         <Text style={styles.loc}>Manila, Philippines</Text>
@@ -49,7 +49,7 @@ export default function ProfileScreen() {
                 <TouchableOpacity style={{columnGap: 40,flexDirection:"row"}}>
                     <Ionicons name={"call-outline"} size={40} color={"#d16a1d"}></Ionicons>
                         <View style={{}}>
-                            <Text style={{fontSize: 20, color: "black", fontWeight: 600}}>+63 915 413 7270</Text>
+                            <Text style={{fontSize: 18, color: "black", fontWeight: 600}}>+63 915 413 7270</Text>
                             <Text style={{color: "black"}}>Meralco Hotline</Text>
                             
                         </View>
@@ -57,17 +57,24 @@ export default function ProfileScreen() {
                 <TouchableOpacity style={{columnGap: 40,flexDirection:"row"}}>
                     <Ionicons name={"mail-outline"} size={40} color={"#d16a1d"}></Ionicons>
                         <View style={{}}>
-                            <Text style={{fontSize: 20, color: "black", fontWeight: 600}}>meralcoassist@gmail.com</Text>
+                            <Text style={{fontSize: 18, color: "black", fontWeight: 600}}>meralcoassist@gmail.com</Text>
                             <Text style={{color: "black"}}>Meralco Email Address</Text>
                         </View>
                 </TouchableOpacity>
-                <View style={{flexDirection:"row", rowGap:40, justifyContent:"space-around", alignItems:"center", marginTop: 10,}}>
+                <TouchableOpacity style={{columnGap: 40,flexDirection:"row"}}>
+                    <Ionicons name={"information-circle-outline"} size={40} color={"#d16a1d"}></Ionicons>
+                        <View style={{}}>
+                            <Text style={{fontSize: 18, color: "black", fontWeight: 600}}>Learn more</Text>
+                            <Text style={{color: "black"}}>Meralco Official Website</Text>
+                        </View>
+                </TouchableOpacity> 
+                <View style={{flexDirection:"row", columnGap:40, justifyContent:"space-around", alignItems:"center", marginTop: 10,}}>
                     <TouchableOpacity style={[styles.profileBtn, styles.shadowProp]}>
                         <Ionicons name={"settings-outline"} size={30} color={"#d16a1d"}></Ionicons>
                         <Text style={{fontSize:14, fontWeight: "bold"}}>Settings</Text>
                     </TouchableOpacity>
             
-                    <TouchableOpacity style={[styles.profileBtn, styles.shadowProp]} onPress={onPressHandler}>
+                    <TouchableOpacity style={[styles.profileBtn, styles.shadowProp]} >
                         <Ionicons name={"log-out-outline"} size={30} color={"#d16a1d"}></Ionicons>
                         <Text style={{fontSize:14, fontWeight: "bold"}}>Log out</Text>
                     </TouchableOpacity>
@@ -83,6 +90,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
     body: {
         flex: 1,
+        marginTop: 10,
     },
     text: {
         fontSize: 40,
@@ -91,7 +99,7 @@ const styles = StyleSheet.create({
     },
     coverImg: {
         position: "absolute",
-        height: 350,
+        height: 375,
         objectFit: "contain",
          
     },

@@ -24,10 +24,13 @@ export default function Login() {
     <View style={styles.container}>
            {/* <Image style={styles.image} source={require("./assets/log2.png")} /> */}
            <StatusBar style="auto" />
+            <Image source={require("./assets/logo.png")}
+                    style={styles.logo}
+            ></Image>
            <View style={[styles.inputView, styles.shadowProp]}>
                <TextInput
                    style={styles.TextInput}
-                   placeholder="Email."
+                   placeholder="Email"
                    placeholderTextColor="#003f5c"
                    onChangeText={(email) => setEmail(email)}
                />
@@ -35,7 +38,7 @@ export default function Login() {
            <View style={[styles.inputView, styles.shadowProp]}>
                <TextInput
                    style={styles.TextInput}
-                   placeholder="Password."
+                   placeholder="Password"
                    placeholderTextColor="#003f5c"
                    secureTextEntry={true}
                    onChangeText={(password) => setPassword(password)}
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
         height: 70,
         flex: 1,
         padding: 10,
-        marginLeft: 20,
+        
     },
     forgot_button: {
         height: 30,
@@ -105,4 +108,9 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "white",
     },
+    logo: {
+        height: 200,
+        width: 200,
+
+    }
 });
