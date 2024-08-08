@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "expo-router-study",
-    "slug": "expo-router-study",
+    "name": "project_electrifai",
+    "slug": "project_electrifai",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -27,7 +27,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/logo.png"
     },
     "plugins": [
       "expo-router",
