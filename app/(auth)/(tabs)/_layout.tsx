@@ -1,7 +1,7 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
-import { Pressable } from "react-native";
+import { Pressable, Image } from "react-native";
 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
@@ -21,17 +21,27 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        tabBarLabelPosition: "below-icon", 
+        tabBarActiveTintColor: "orange",
+        tabBarLabelPosition: "below-icon",
         tabBarStyle: {
           paddingVertical: 10,
-          height: 75, 
+          height: 75,
         },
         tabBarLabelStyle: {
           fontSize: 14,
-          fontWeight: "semibold", 
+          fontWeight: "semibold",
         },
         headerShown: useClientOnlyValue(false, true),
+        headerLeft: () => (
+          <Image
+            source={require('../../../assets/images/logo.png')}
+            style={{ width: 50, height: 50, marginLeft: 15 }}
+          />
+        ),
+        headerTitleAlign: 'center', // Center the header title
+        headerTitleStyle: {
+          fontSize: 20, // Adjust the font size if needed
+        },
       }}
     >
       <Tabs.Screen
@@ -41,18 +51,20 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           tabBarLabel: "Home",
           headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? "light"].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
+            <>
+              <Link href="/modal" asChild>
+                <Pressable>
+                  {({ pressed }) => (
+                    <FontAwesome
+                      name="info-circle"
+                      size={25}
+                      color={Colors[colorScheme ?? "light"].text}
+                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    />
+                  )}
+                </Pressable>
+              </Link>
+            </>
           ),
         }}
       />
