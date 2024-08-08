@@ -1,7 +1,7 @@
 import { Redirect, Stack } from 'expo-router';
 
-import { useSession } from '../ctx';
 import { Text } from '@/components/Themed';
+import { useSession } from '../ctx';
 
 export default function AppLayout() {
   const { session, isLoading } = useSession();
@@ -20,6 +20,7 @@ export default function AppLayout() {
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+      <Stack.Screen name="payment-details" options={{ title: 'Payment Details' }} />
     </Stack>
   )
 }

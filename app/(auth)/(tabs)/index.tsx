@@ -4,6 +4,7 @@ import { useSession } from '../../ctx';
 import Card from '@/components/Card'; // Import the Card component
 import CurrentConsumptionCard from '@/components/CurrentConsumptionCard'; // Import the CurrentConsumptionCard component
 import { LineChart } from 'react-native-chart-kit'; // Import the chart component
+import { BarChart } from 'react-native-chart-kit';
 
 const { width } = Dimensions.get('window');
 
@@ -23,7 +24,9 @@ const monthlyConsumptionData = {
   labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   datasets: [
     {
-      data: [120, 140, 110, 150, 170, 200, 220, 190, 210, 180, 160, 175] // Sample data for kWh consumption
+      data: [120, 140, 110, 150, 170, 200, 220, 190, 210, 180, 160, 175],
+      color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // Customize color
+      strokeWidth: 2 // Optional: customize stroke width
     }
   ]
 };
@@ -54,11 +57,12 @@ export default function HomeScreen() {
       />
       <View style={styles.chartContainer}>
         <Text style={styles.chartTitle}>Monthly Consumption</Text>
-        <LineChart
+        <BarChart
           data={monthlyConsumptionData}
           width={width - 32} // Adjust width based on padding and container
           height={220}
-          yAxisLabel="kWh"
+          yAxisLabel="" // Optional: Customize y-axis label prefix
+          yAxisSuffix="kWh" // Add the suffix for the y-axis labels
           chartConfig={{
             backgroundColor: '#fff',
             backgroundGradientFrom: '#fff',
@@ -69,13 +73,11 @@ export default function HomeScreen() {
             style: {
               borderRadius: 16,
             },
-            propsForDots: {
-              r: '6',
-              strokeWidth: '2',
-              stroke: '#ffa726',
+            propsForLabels: {
+              fontSize: 12
             },
           }}
-          bezier
+          verticalLabelRotation={30} // Optional: Rotate labels for better fit
         />
       </View>
     </View>

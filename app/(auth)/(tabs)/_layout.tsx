@@ -21,7 +21,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "orange",
+        tabBarActiveTintColor: "#FFB315",
         tabBarLabelPosition: "below-icon",
         tabBarStyle: {
           paddingVertical: 10,
