@@ -1,35 +1,46 @@
-import { Button, StyleSheet, TextInput } from "react-native";
+import { Button, StyleSheet, TextInput, Image } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { useSession } from "./ctx";
 import { router } from "expo-router";
+import { TouchableOpacity } from "react-native";
 
 export default function Login() {
   const { signIn } = useSession();
+  
   const handleLogin = () => {
-    //Adicione sua lógica de login aqui
+    // Add your login logic here
     signIn();
-    //Antes de navegar, tenha certeza de que o usuário está autenticado
+    // Ensure the user is authenticated before navigating
     router.replace("/");
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Project ElectrifAI </Text>
-      <Text style={styles.paragraph}>
-        
-      </Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
+      <Image
+        source={require('../assets/images/logo.png')}
+        style={styles.logo}
       />
-      <TextInput placeholder="Username(not required)" style={styles.input} />
+      <Text style={styles.title}>Project ElectriAI</Text>
       <TextInput
-        placeholder="Password(not required)"
+        placeholder="Email"
+        style={styles.input}
+        placeholderTextColor="#D4820C"
+      />
+      <TextInput
+        placeholder="Password"
         secureTextEntry
         style={styles.input}
+        placeholderTextColor="#D4820C"
       />
-      <Button title="Login" onPress={handleLogin} />
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+     <View style={styles.signupContainer}>
+        <Text style={styles.signupText}>Don't have an account yet?</Text>
+        <TouchableOpacity onPress={() => router.push('/signup')}>
+          <Text style={styles.signupLink}> Sign Up</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -39,28 +50,52 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#fff",
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    marginBottom: 20,
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    textAlign: "center",
-  },
-
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
+    color: "#FFB315",
+    marginBottom: 20,
   },
   input: {
     width: "80%",
     borderWidth: 1,
-    borderColor: "#000",
+    borderColor: "#D4820C",
     padding: 10,
     margin: 10,
     borderRadius: 4,
+    color: "#000",
+    backgroundColor: "#fff",
+  },
+  button: {
+    width: "80%",
+    backgroundColor: "#FFB315",
+    padding: 14,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  signupContainer: {
+    flexDirection: "row",
+    marginTop: 20,
+  },
+  signupText: {
+    color: "#000",
+  },
+  signupLink: {
+    color: "#FFB315",
+    marginLeft: 5,
+    fontWeight: "bold",
   },
 });
