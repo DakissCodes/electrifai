@@ -1,17 +1,15 @@
-import { Button, StyleSheet, TextInput, Image } from "react-native";
+import { StyleSheet, TextInput, Image } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { useSession } from "./ctx";
 import { router } from "expo-router";
 import { TouchableOpacity } from "react-native";
 
-export default function Login() {
-  const { signIn } = useSession();
+export default function Signup() {
+  const { signUp } = useSession();
   
-  const handleLogin = () => {
-    // Add your login logic here
-    signIn();
-    // Ensure the user is authenticated before navigating
-    router.replace("/");
+  const handleSignup = () => {
+    signUp();
+    router.replace("/login");
   };
 
   return (
@@ -20,7 +18,17 @@ export default function Login() {
         source={require('../assets/images/logo.png')}
         style={styles.logo}
       />
-      <Text style={styles.title}>Project ElectriAI</Text>
+      <Text style={styles.title}>Sign Up</Text>
+      <TextInput
+        placeholder="First Name"
+        style={styles.input}
+        placeholderTextColor="#D4820C"
+      />
+      <TextInput
+        placeholder="Last Name"
+        style={styles.input}
+        placeholderTextColor="#D4820C"
+      />
       <TextInput
         placeholder="Email"
         style={styles.input}
@@ -32,13 +40,13 @@ export default function Login() {
         style={styles.input}
         placeholderTextColor="#D4820C"
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSignup}>
+        <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
-     <View style={styles.signupContainer}>
-        <Text style={styles.signupText}>Don't have an account yet?</Text>
-        <TouchableOpacity onPress={() => router.push('/signup')}>
-          <Text style={styles.signupLink}> Sign Up</Text>
+      <View style={styles.loginContainer}>
+        <Text style={styles.loginText}>Already have an account?</Text>
+        <TouchableOpacity onPress={() => router.push('/login')}>
+          <Text style={styles.loginLink}> Login</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -86,14 +94,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  signupContainer: {
+  loginContainer: {
     flexDirection: "row",
     marginTop: 20,
   },
-  signupText: {
+  loginText: {
     color: "#000",
   },
-  signupLink: {
+  loginLink: {
     color: "#FFB315",
     marginLeft: 5,
     fontWeight: "bold",

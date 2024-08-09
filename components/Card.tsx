@@ -22,7 +22,6 @@ export default Card;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
     borderRadius: 12, // Slightly more rounded corners
     padding: 20, // Increased padding for better readability
     marginVertical: 12, // Increased vertical margin for spacing
@@ -39,6 +38,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden', // Contain content within the card
   },
   title: {
+    color:'#fff',
     fontSize: 20, // Larger font size for the title
     fontWeight: 'bold',
     marginBottom: 8, // More space between title and description
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 40, 
     fontWeight: 'bold',
-    color: '#000',
+    color: '#fff',
     flexShrink: 1, 
   } as TextStyle,
 });

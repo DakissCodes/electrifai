@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f8f8f8",
   },
   billContainer: {
-    backgroundColor: "#ff6600",
+    backgroundColor: "#FFB315",
     borderRadius: 10,
     padding: 20,
     marginBottom: 20,
