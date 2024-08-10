@@ -13,7 +13,8 @@ import { useSession } from '../../ctx';
 import Card from '@/components/Card'; // Import the Card component
 import { BarChart } from 'react-native-chart-kit'; // Import the chart component
 import Svg, { Rect } from 'react-native-svg';
-// import { ScrollView } from 'react-native-gesture-handler';
+import ModalThemed from "@/components/ModalThemed"
+import { isNewWebImplementationEnabled } from 'react-native-gesture-handler/lib/typescript/EnableNewWebImplementation';
 
 const { width } = Dimensions.get('window');
 
@@ -41,6 +42,13 @@ const monthlyConsumptionData = {
 };
 
 export default function HomeScreen() {
+  const [isVisible, setIsVisible] = useState(false)
+  // visible hook for modal
+
+  const handleModalPress =  () => {
+    setIsVisible(!isVisible)
+  }
+
   const { session } = useSession();
 
   const [tooltip, setTooltip] = useState<{ x: number; y: number; value: number } | null>(null);
@@ -80,7 +88,9 @@ export default function HomeScreen() {
             // Use this for adding separation between Flatlist items instead
             data={data}
             renderItem={({ item }: { item: CardData }) => (
-              <TouchableOpacity style={{elevation:1}}>
+              <TouchableOpacity style={{elevation:1}}
+              onPress={handleModalPress}
+              >
                 <Card style={styles.card} title={item.title} description={item.description} />
               </TouchableOpacity>
             )}
@@ -128,7 +138,17 @@ export default function HomeScreen() {
             {renderTooltip()}
           </TouchableOpacity>
         </View>
+
+
       </ScrollView>
+      
+        <ModalThemed
+        isVisible = {isVisible}
+        handleModalPress = {handleModalPress}
+        avgDailyConsumption={5.67}
+        currentTime={"5.40 PM"}
+        // handle back clicks
+        ></ModalThemed>
     {/* seperated a main container to facilitate home screen padding */}
 
     </View>
