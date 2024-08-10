@@ -22,15 +22,17 @@ export default Card;
 
 const styles = StyleSheet.create({
   card: {
+    
     borderRadius: 12, // Slightly more rounded corners
     padding: 20, // Increased padding for better readability
-    marginVertical: 12, // Increased vertical margin for spacing
-    marginHorizontal: 16, // Margin for spacing between cards
+    // I removed the explicit component spacing (this can be handled within the Flatlist tag instead)
+    marginVertical: 10, // Increased vertical margin for spacing
     shadowColor: '#000',
     shadowOpacity: 0.2, // Slightly stronger shadow
     shadowOffset: { width: 0, height: 4 }, // Increased shadow offset
     shadowRadius: 10, // Slightly larger shadow radius
-    elevation: 4, // Increased elevation for Android
+    // moved the elevation styling to the touchableopacity component to prevent showing elevation on press
+    // elevation: 1, // Increased elevation for Android
     alignItems: 'flex-start', // Align content to the left
     width: '100%', // Adjusted width to be responsive
     maxWidth: 500, // Max width to prevent exceeding the screen width
@@ -39,13 +41,15 @@ const styles = StyleSheet.create({
   },
   title: {
     color:'#fff',
-    fontSize: 20, // Larger font size for the title
-    fontWeight: 'bold',
+    fontSize: 16, // Larger font size for the title
+    // adjusted the styling slightly
+    // fontWeight: 'bold',
     marginBottom: 8, // More space between title and description
     flexShrink: 1, // Allow title to shrink to prevent overflow
   } as TextStyle,
   description: {
-    fontSize: 40, 
+    fontSize: 30,
+    // adjusted font size 
     fontWeight: 'bold',
     color: '#fff',
     flexShrink: 1, 
