@@ -1,5 +1,6 @@
-import { Button, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { Text, View } from "@/components/Themed";
+import React from 'react';
+import { StyleSheet, Image, TouchableOpacity, View, Dimensions } from "react-native";
+import { Text } from "@/components/Themed";
 import { useSession } from "@/app/ctx";
 
 export default function ProfileScreen() {
@@ -16,12 +17,20 @@ export default function ProfileScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.profileHeader}>
-                <Image source={{ uri: user.profilePhoto }} style={styles.profilePhoto} />
+                <View style={styles.photoAndEditContainer}>
+                    {/* Circular Profile Photo Frame */}
+                    <View style={styles.profilePhotoContainer}>
+                        <Image source={{ uri: user.profilePhoto }} style={styles.profilePhoto} />
+                    </View>
+                    {/* Edit Profile Photo Text */}
+                    <TouchableOpacity style={styles.editButton}>
+                        <Text style={styles.editButtonText}>Edit Profile Photo</Text>
+                    </TouchableOpacity>
+                </View>
+                {/* Profile Name */}
                 <Text style={styles.profileName}>{user.name}</Text>
-                <TouchableOpacity style={styles.editButton}>
-                    <Text style={styles.editButtonText}>Edit Profile Photo</Text>
-                </TouchableOpacity>
             </View>
+
             <View style={styles.infoContainer}>
                 <Text style={styles.infoTitle}>Personal Information</Text>
                 <View style={styles.infoContent}>
@@ -57,29 +66,45 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
         backgroundColor: "#FFA500", // orange background
+        paddingHorizontal: 20,
     },
     profileHeader: {
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         marginTop: 50,
     },
-    profilePhoto: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
+    photoAndEditContainer: {
+        alignItems: 'center',
     },
-    profileName: {
-        fontSize: 20,
-        fontWeight: "bold",
-        marginVertical: 10,
-        color: "#fff",
+    profilePhotoContainer: {
+        borderRadius: Dimensions.get('window').width * 0.2, // Half of width/height to make it circular
+        width: Dimensions.get('window').width * 0.4,
+        height: Dimensions.get('window').width * 0.4,
+        backgroundColor: '#fff', // White background similar to the example
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden', // Ensure image stays within the circular frame
+        marginBottom: 10,
+    },
+    profilePhoto: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover',
     },
     editButton: {
-        marginVertical: 10,
+        marginTop: 5, // Space between the circle and the edit text
     },
     editButtonText: {
-        color: "#00f",
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 14,
+    },
+    profileName: {
+        fontSize: 22,
+        fontWeight: "bold",
+        marginLeft: 20,
+        color: "#fff",
     },
     infoContainer: {
         width: "90%",
@@ -87,6 +112,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 20,
         marginVertical: 20,
+        shadowColor: "#000",
+        shadowOpacity: 0.2,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 10,
+        elevation: 5, // For Android shadow
     },
     infoTitle: {
         fontSize: 18,
@@ -98,12 +128,14 @@ const styles = StyleSheet.create({
     },
     label: {
         fontWeight: "bold",
+        color: "#333",
     },
     editInfoButton: {
         alignItems: "flex-end",
     },
     editInfoButtonText: {
         color: "#00f",
+        fontWeight: "bold",
     },
     moreContainer: {
         width: "90%",
@@ -129,6 +161,11 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         alignItems: "center",
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowOffset: { width: 0, height: 1 },
+        shadowRadius: 5,
+        elevation: 3, // For Android shadow
     },
     optionButtonText: {
         color: "#000",
